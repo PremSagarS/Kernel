@@ -19,6 +19,10 @@ process_t *get_next_process()
 
 void scheduler( int eip, int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int eax )
 {
+	print("EAX = ");
+	printi(eax);
+	println();
+
 	process_t *curr_process;
 	
 	curr_process = processes[ curr_sch_pid ];

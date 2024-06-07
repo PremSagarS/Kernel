@@ -160,8 +160,21 @@ isr_31:
 	
 isr_32:
 	cli
-	push 32
-	jmp irq_basic
+	
+	pusha
+	
+	mov eax, [esp + 32]
+	push eax
+	
+	call scheduler
+	
+	mov al, 0x20
+	out 0x20, al
+	
+	add esp, 40d
+	push run_next_process
+	
+	iret
 	
 isr_33:
 	cli
