@@ -1,7 +1,7 @@
 #include "screen.h"
 #include "scheduler.h"
 
-void fibonacci ( int );
+void fibonacci(int);
 
 void processA();
 void processB();
@@ -12,68 +12,81 @@ void kernel_main()
 {
 	process_t p1, p2, p3, p4;
 
-	screen_init();	
+	screen_init();
 	scheduler_init();
-	
+
 	process_create(&processA, &p1);
 	process_create(&processB, &p2);
 	process_create(&processC, &p3);
 	process_create(&processD, &p4);
-	
+
 	fibonacci(20);
-	
-	while (1) {};
+
+	while (1)
+	{
+	};
 }
 
-void processA () {
+void processA()
+{
 	print("Process A,");
-	
-	while (1) {
-		asm("mov $5390, %eax");
+
+	while (1)
+	{
+		asm("mov $4200, %eax");
 	}
 }
 
-void processB () {
+void processB()
+{
 	print("Process B,");
-	
-	while (1) {
-		asm("mov $5391, %eax");
+
+	while (1)
+	{
+		asm("mov $4201, %eax");
 	}
 }
 
-void processC () {
+void processC()
+{
 	print("Process C,");
-	
-	while (1) {
-		asm("mov $5392, %eax");
+
+	while (1)
+	{
+		asm("mov $4202, %eax");
 	}
 }
 
-void processD () {
+void processD()
+{
 	print("Process D,");
-	
-	while (1) {
-		asm("mov $5393, %eax");
+
+	while (1)
+	{
+		asm("mov $4203, %eax");
 	}
 }
 
-void fibonacci(int n) {
+void fibonacci(int n)
+{
 	int pp = 0;
 	int p = 1;
 	int tmp;
-	
-	for (int i = 0; i < n; i++) {
+
+	for (int i = 0; i < n; i++)
+	{
 		printi(pp);
 		print(" ");
 		tmp = p;
 		p += pp;
-		pp = tmp; 
+		pp = tmp;
 	}
-	
+
 	return;
 }
 
-void interrupt_handler (int interrupt_number) {
+void interrupt_handler(int interrupt_number)
+{
 	// println();
 	// print( "Interrupt received ");
 	// printi(interrupt_number);
