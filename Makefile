@@ -3,7 +3,7 @@ CC = gcc
 BOOTSTRAP_FILE = bootstrap.asm 
 INIT_KERNEL_FILES = starter.asm
 KERNEL_FILES = main.c
-KERNEL_FLAGS = -Wall -m32 -c -ffreestanding -fno-asynchronous-unwind-tables -fno-pie -fcommon
+KERNEL_FLAGS = -Wall -m32 -c -ffreestanding -fno-asynchronous-unwind-tables -Wno-unused-variable -fno-pie -fcommon -fno-stack-protector -Wno-incompatible-pointer-types -Wno-int-conversion -Wno-implicit-function-declaration
 KERNEL_OBJECT = -o kernel.elf
 
 build: $(BOOTSTRAP_FILE) $(KERNEL_FILE)
@@ -13,7 +13,13 @@ build: $(BOOTSTRAP_FILE) $(KERNEL_FILE)
 	$(CC) $(KERNEL_FLAGS) screen.c -o screen.elf
 	$(CC) $(KERNEL_FLAGS) process.c -o process.elf
 	$(CC) $(KERNEL_FLAGS) scheduler.c -o scheduler.elf
-	ld -melf_i386 -Tlinker.ld starter.o kernel.elf screen.elf process.elf scheduler.elf -o 539kernel.elf
+	$(CC) $(KERNEL_FLAGS) heap.c -o heap.elf
+	$(CC) $(KERNEL_FLAGS) ata.c -o ata.elf
+	$(CC) $(KERNEL_FLAGS) paging.c -o paging.elf
+	$(CC) $(KERNEL_FLAGS) str.c -o str.elf
+	# $(CC) $(KERNEL_FLAGS) filesystem.c -o filesystem.elf
+	# ld -melf_i386 -Tlinker.ld starter.o kernel.elf screen.elf paging.elf heap.elf process.elf scheduler.elf str.elf ata.elf filesystem.elf -o 539kernel.elf
+	ld -melf_i386 -Tlinker.ld starter.o kernel.elf screen.elf paging.elf heap.elf process.elf scheduler.elf str.elf ata.elf -o 539kernel.elf
 	objcopy -O binary 539kernel.elf 539kernel.bin
 	dd if=bootstrap.o of=kernel.img
 	dd seek=1 conv=sync if=539kernel.bin of=kernel.img bs=512 count=8

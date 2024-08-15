@@ -18,4 +18,4 @@ process_t *processes [ 64 ];
 int processes_count, curr_pid;
 
 void process_init();
-void process_create( int *, process_t * );
+process_t* process_create( int * );
